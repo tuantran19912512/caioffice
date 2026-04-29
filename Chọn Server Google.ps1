@@ -338,7 +338,7 @@ $DongHoUI.Add_Tick({
     if ($Global:DongBo.TrangThai -match "HOÀN TẤT|ĐÃ HỦY") { $NutBatDau.IsEnabled = $true; $NutHuy.IsEnabled = $false; $DongHoUI.Stop() }
 })
 
-# [MODULE 8] NÚT BẤM VÀ CẮT CÁP HỦY
+# [MODULE 8] NÚT BẤM VÀ CẮT CÁP HỦY (ĐÃ SỬA LỖI CHỌN Ổ ĐĨA)
 $NutBatDau.Add_Click({
     $MucChon = @($DanhSach.SelectedItems); if ($MucChon.Count -eq 0) { [Windows.MessageBox]::Show("Vui lòng chọn bản cài Office Google Drive!", "Cảnh báo", 0, 48); return }
     [DongCoTai]::Reset(); $NutBatDau.IsEnabled = $false; $NutHuy.IsEnabled = $true; $Global:DongBo.TrangThai = "Đang kết nối API Google..."; $Global:DongBo.Lenh = "CHAY"; $Global:DongBo.ThuMucLuu = $HopThuMuc.Text
@@ -359,7 +359,13 @@ $NutHuy.Add_Click({
     } -ArgumentList $Global:DongBo
 })
 
-$NutChon.Add_Click({ $d = New-Object Forms.FolderBrowserDialog; if ($d.ShowDialog() -eq "OK") { $HopThuMuc.Text = $d.SelectedPath } })
+$NutChon.Add_Click({ 
+    $d = New-Object System.Windows.Forms.FolderBrowserDialog
+    if ($d.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) { 
+        $HopThuMuc.Text = $d.SelectedPath 
+    } 
+})
+
 $NutMo.Add_Click({ if(Test-Path $HopThuMuc.Text) { Start-Process explorer.exe $HopThuMuc.Text } })
 
 # [MODULE 9] NẠP DỮ LIỆU CSV (LỌC LINK GOOGLE DRIVE)
